@@ -1,11 +1,4 @@
 ﻿
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Shared.Data.Interceptor;
-
-
 namespace Catalog;
 
 public static class CatalogModule
@@ -23,6 +16,8 @@ public static class CatalogModule
             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
 
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
         // Data - Infrastructure services
         var connectionString = configuration.GetConnectionString("Database");
 
@@ -35,7 +30,7 @@ public static class CatalogModule
             option.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
             option.UseNpgsql(connectionString);
         });
-
+ 
         services.AddScoped<IDataSeeder, CatalogDataSeeder>();
 
         return services;

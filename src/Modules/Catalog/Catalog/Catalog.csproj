@@ -12,13 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
-    <Folder Include="Products\EventHandlers\" />
     <Folder Include="Products\Exceptions\" />
-    <Folder Include="Products\Features\DeleteProduct\" />
-    <Folder Include="Products\Features\GetProductByCategory\" />
-    <Folder Include="Products\Features\GetProductById\" />
-    <Folder Include="Products\Features\GetProduct\" />
-    <Folder Include="Products\Features\UpdateProduct\" />
   </ItemGroup>
 
 </Project>

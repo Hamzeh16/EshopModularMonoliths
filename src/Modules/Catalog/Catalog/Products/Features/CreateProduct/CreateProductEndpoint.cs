@@ -1,12 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+namespace Catalog.Products.Features.CreateProduct;
 
-namespace Catalog.Products.Features.CreateProduct
+public record CreateProductRequest(ProductDto Product);
+
+public record CreateProductResponse(Guid Id);
+
+public class CreateProductEndpoint
+    : ICarterModule
 {
-    internal class CreateProductEndpoint
+    public void AddRoutes(IEndpointRouteBuilder app)
     {
+        app.MapPost("/products", async (CreateProductRequest request, ISender sender) =>
+        {
+            var command = request.Adapt<CreateProductCommand>();
+
+            var result = await sender.Send(command);
+
+            var respone = result.Adapt<CreateProductResponse>();
+
+            return Results.Created($"/products/{respone.Id}", respone);
+        })
+        .WithName("CreateProduct")
+        .Produces<CreateProductResponse>(StatusCodes.Status201Created)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Create Product")
+        .WithDescription("Create Product");
+
     }
 }
+
