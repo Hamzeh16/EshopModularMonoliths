@@ -17,31 +17,16 @@ public class CreateProductValidator : AbstractValidator<CreateProductCommand>
 }
 
 public class CreateProductHandler
-    (CatalogDbContext dbContext, IValidator<CreateProductCommand> validator,
-    ILogger<CreateProductHandler> logger)
+    (CatalogDbContext dbContext)
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand command,
         CancellationToken cancellationToken)
     {
         // Create Product entity from command object
-
-        // Save to Database
-
+        // Save to Database 
         // Return Result
 
-        // Validtion Part
-        var result = await validator.ValidateAsync(command, cancellationToken);
-        var errors = result.Errors.Select(x => x.ErrorMessage).ToList();
-        if (errors.Any())
-        {
-            throw new ValidationException(errors.FirstOrDefault());
-        }
-
-        //logging part
-        logger.LogInformation("CreateProductCommandHandler.Handle called with {@Command}", command);
-
-        //actual logic
         var product = CreateNewProduct(command.Product);
 
         dbContext.Products.Add(product);

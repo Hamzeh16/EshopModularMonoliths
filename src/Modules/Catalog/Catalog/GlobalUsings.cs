@@ -22,3 +22,6 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Shared.Data.Interceptor;
 global using FluentValidation;
+global using Catalog.Products.Exceptions;
+global using Shared.Behavires;
+

@@ -20,7 +20,7 @@ internal class GetProductByIdHandler(CatalogDbContext dbContext)
 
         if(products is null)
         {
-            throw new Exception($"Product not found: {query.Id}");
+            throw new ProductNotFoundException(query.Id);
         }
 
         // mapping product entity to productdto Using Mapster
