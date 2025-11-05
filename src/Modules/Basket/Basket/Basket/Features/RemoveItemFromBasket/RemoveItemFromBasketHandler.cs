@@ -1,0 +1,36 @@
+﻿namespace Basket.Basket.Features.RemoveItemFromBasket;
+
+public record RemoveItemFromBasketCommand(string UserName, Guid ProductId)
+    : ICommand<RemoveItemFromBasketResult>;
+
+public record RemoveItemFromBasketResult(Guid Id);
+
+public class RemoveItemFromBasketCommandValidator : AbstractValidator<RemoveItemFromBasketCommand>
+{
+    public RemoveItemFromBasketCommandValidator()
+    {
+        RuleFor(x => x.UserName)
+            .NotEmpty()
+            .WithMessage("UserName is required");
+
+        RuleFor(x => x.ProductId)
+            .NotEmpty()
+            .WithMessage("ProductId is required");
+    }
+}
+
+
+internal class RemoveItemFromBasketHandler(IBasketRepossitory repossitory)
+    : ICommandHandler<RemoveItemFromBasketCommand, RemoveItemFromBasketResult>
+{
+    public async Task<RemoveItemFromBasketResult> Handle(RemoveItemFromBasketCommand command, CancellationToken cancellationToken)
+    {
+        var shoppingCart = await repossitory.GetBasket(command.UserName, false, cancellationToken);
+
+        shoppingCart.RemoveItem(command.ProductId);
+
+        await repossitory.SaveChangesAsync(cancellationToken);
+
+        return new RemoveItemFromBasketResult(shoppingCart.Id);
+    }
+}

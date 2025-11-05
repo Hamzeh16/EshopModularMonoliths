@@ -6,8 +6,8 @@ public class ShoppingCart : Aggregate<Guid>
     public string UserName { get; private set; } = default!;
 
     private readonly List<ShoppingCartItem> _items = new();
-    public IReadOnlyList<ShoppingCartItem> items => _items.AsReadOnly();
-    public decimal TotalPrice => items.Sum(x => x.Price * x.Quantity);
+    public IReadOnlyList<ShoppingCartItem> Items => _items.AsReadOnly();
+    public decimal TotalPrice => Items.Sum(x => x.Price * x.Quantity);
 
     public static ShoppingCart Create(Guid id, string userName)
     {
@@ -27,7 +27,7 @@ public class ShoppingCart : Aggregate<Guid>
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
 
-        var existingItem = items.FirstOrDefault(x => x.ProductId == productId);
+        var existingItem = Items.FirstOrDefault(x => x.ProductId == productId);
 
         if (existingItem != null)
         {
@@ -42,7 +42,7 @@ public class ShoppingCart : Aggregate<Guid>
 
     public void RemoveItem(Guid productId)
     {
-        var existingItem = items.FirstOrDefault(x => x.ProductId == productId);
+        var existingItem = Items.FirstOrDefault(x => x.ProductId == productId);
 
         if (existingItem != null)
         {
