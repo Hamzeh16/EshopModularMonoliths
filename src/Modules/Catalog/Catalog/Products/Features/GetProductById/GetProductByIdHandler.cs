@@ -1,10 +1,5 @@
-﻿namespace Catalog.Products.Features.GetProductById;
-
-public record GetProductByIdQuery(Guid Id)
-    : IQuery<GetProductByIdResult>;
-
-public record GetProductByIdResult(ProductDto Products);
-
+﻿
+namespace Catalog.Products.Features.GetProductById;
 
 internal class GetProductByIdHandler(CatalogDbContext dbContext)
     : IQueryHandler<GetProductByIdQuery, GetProductByIdResult>
@@ -17,7 +12,7 @@ internal class GetProductByIdHandler(CatalogDbContext dbContext)
         var products = await dbContext.Products
             .AsNoTracking()
             .SingleOrDefaultAsync(p => p.Id == query.Id, cancellationToken);
-
+         
         if(products is null)
         {
             throw new ProductNotFoundException(query.Id);
@@ -30,4 +25,3 @@ internal class GetProductByIdHandler(CatalogDbContext dbContext)
         return new GetProductByIdResult(productDtos);
     }
 }
-

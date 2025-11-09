@@ -3,7 +3,7 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, config) => 
+builder.Host.UseSerilog((context, config) =>
     config.ReadFrom.Configuration(context.Configuration));
 
 // Add Services to the container.
@@ -19,16 +19,10 @@ builder.Services
 builder.Services
     .AddMediatRWithAssemblies(basketAssembly, catalogAssembly);
 
-// Appliction Use Case services
-//builder.Services.AddMediatR(config =>
-//{
-//    config.RegisterServicesFromAssemblies(catalogAssembly, basketAssembly);
-//    config.AddOpenBehavior(typeof(ValidtionBehavires<,>));
-//    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
-//});
-
-//builder.Services.AddValidatorsFromAssemblies([catalogAssembly, basketAssembly]);
-
+builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    });
 
 builder.Services
     .AddCatalogModule(builder.Configuration)

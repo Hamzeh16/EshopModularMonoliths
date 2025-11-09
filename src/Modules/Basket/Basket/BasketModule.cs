@@ -1,6 +1,4 @@
-﻿
-using Basket.Data.Repository;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using Shared.Data;
 using Shared.Data.Interceptor;
 
@@ -17,6 +15,7 @@ public static class BasketModule
 
         // 2. Application Use Case services
         services.AddScoped<IBasketRepossitory, BasketRepossitory>();
+        services.Decorate<IBasketRepossitory, CachedBasketRepossitory>();
 
         // Data - Infrastructure services
         var connectionString = configuration.GetConnectionString("Database");
